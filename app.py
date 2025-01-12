@@ -6,6 +6,9 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+def home():
+    print("Hello World")
+
 @app.route('/run-code', methods=['POST'])
 def run_code():
     data = request.json
@@ -36,5 +39,5 @@ def run_code():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000, debug=True)
