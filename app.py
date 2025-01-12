@@ -6,6 +6,15 @@ import os
 app = Flask(__name__)
 CORS(app)
 
+def cleanup_files(directory, max_files=9):
+    # Get a list of files in the directory sorted by modification time
+    files = [os.path.join(directory, f) for f in os.listdir(directory)]
+    files.sort(key=lambda x: os.path.getmtime(x))
+
+    # Check if the number of files exceeds the maximum allowed
+    while len(files) > max_files:
+        os.remove(files.pop(0))
+
 def home():
     print("Hello World")
 
@@ -28,6 +37,7 @@ def run_code():
     # if not os.path.exists(output_folder):
     #     os.makedirs(output_folder)
     output_folder = 'static'  # Make sure this directory exists
+    cleanup_files(output_folder)
     output_path = os.path.join(output_folder, 'output.xlsx')
     
     # Save the DataFrame to an Excel file
